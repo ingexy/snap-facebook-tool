@@ -1,0 +1,381 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>✨ Congratulations Tool</title>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,700;1,400&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet">
+<style>
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+  body {
+    min-height: 100vh;
+    background: #0d0d0d;
+    background-image:
+      radial-gradient(ellipse at 20% 20%, rgba(212, 175, 55, 0.08) 0%, transparent 50%),
+      radial-gradient(ellipse at 80% 80%, rgba(212, 175, 55, 0.05) 0%, transparent 50%);
+    font-family: 'DM Sans', sans-serif;
+    color: #f0ead6;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding: 3rem 1.5rem 5rem;
+  }
+
+  header {
+    text-align: center;
+    margin-bottom: 4rem;
+  }
+
+  header h1 {
+    font-family: 'Playfair Display', serif;
+    font-size: clamp(2rem, 5vw, 3.2rem);
+    font-weight: 700;
+    color: #d4af37;
+    letter-spacing: 0.02em;
+    line-height: 1.2;
+  }
+
+  header p {
+    margin-top: 0.75rem;
+    font-size: 0.95rem;
+    color: #888;
+    font-weight: 300;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+  }
+
+  /* Global name banner */
+  .global-input-wrap {
+    width: 100%;
+    max-width: 680px;
+    margin-bottom: 2.5rem;
+  }
+
+  .global-input-card {
+    background: rgba(212, 175, 55, 0.07);
+    border: 1px solid rgba(212, 175, 55, 0.4);
+    border-radius: 16px;
+    padding: 1.5rem 2rem;
+    position: relative;
+  }
+
+  .global-input-card::before {
+    content: '';
+    position: absolute;
+    top: 0; left: 0; right: 0;
+    height: 2px;
+    background: linear-gradient(90deg, transparent, #d4af37, transparent);
+    border-radius: 16px 16px 0 0;
+  }
+
+  .global-label {
+    font-size: 0.72rem;
+    text-transform: uppercase;
+    letter-spacing: 0.12em;
+    color: #d4af37;
+    font-weight: 500;
+    margin-bottom: 0.6rem;
+    display: block;
+  }
+
+  .global-input-inner {
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+  }
+
+  .global-input-inner input[type="text"] {
+    flex: 1;
+    padding: 0.85rem 1.1rem;
+    background: rgba(255,255,255,0.07);
+    border: 1px solid rgba(212, 175, 55, 0.25);
+    border-radius: 10px;
+    color: #f0ead6;
+    font-family: 'DM Sans', sans-serif;
+    font-size: 1.05rem;
+    outline: none;
+    transition: border-color 0.25s, background 0.25s;
+  }
+
+  .global-input-inner input[type="text"]::placeholder { color: #555; }
+  .global-input-inner input[type="text"]:focus {
+    border-color: rgba(212, 175, 55, 0.65);
+    background: rgba(255,255,255,0.1);
+  }
+
+  .global-hint {
+    font-size: 0.75rem;
+    color: #666;
+    margin-top: 0.55rem;
+    letter-spacing: 0.03em;
+  }
+
+  .cards-wrap {
+    display: flex;
+    flex-direction: column;
+    gap: 2.5rem;
+    width: 100%;
+    max-width: 680px;
+  }
+
+  .card {
+    background: rgba(255,255,255,0.035);
+    border: 1px solid rgba(212, 175, 55, 0.2);
+    border-radius: 20px;
+    padding: 2rem 2.2rem 2.2rem;
+    backdrop-filter: blur(10px);
+    position: relative;
+    overflow: hidden;
+    transition: border-color 0.3s;
+  }
+
+  .card::before {
+    content: '';
+    position: absolute;
+    top: 0; left: 0; right: 0;
+    height: 2px;
+    background: linear-gradient(90deg, transparent, #d4af37, transparent);
+    opacity: 0.6;
+  }
+
+  .card:hover { border-color: rgba(212, 175, 55, 0.45); }
+
+  .card-label {
+    font-family: 'Playfair Display', serif;
+    font-style: italic;
+    font-size: 1rem;
+    color: #d4af37;
+    margin-bottom: 1.4rem;
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+  }
+
+  .card-label span.num {
+    font-family: 'DM Sans', sans-serif;
+    font-style: normal;
+    font-size: 0.7rem;
+    background: rgba(212,175,55,0.15);
+    color: #d4af37;
+    border: 1px solid rgba(212,175,55,0.3);
+    border-radius: 50%;
+    width: 22px; height: 22px;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    font-weight: 500;
+  }
+
+  .input-row {
+    display: flex;
+    flex-direction: column;
+    gap: 0.45rem;
+    margin-bottom: 1.5rem;
+  }
+
+  label {
+    font-size: 0.75rem;
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+    color: #777;
+    font-weight: 500;
+  }
+
+  input[type="date"] {
+    width: 100%;
+    padding: 0.75rem 1rem;
+    background: rgba(255,255,255,0.06);
+    border: 1px solid rgba(255,255,255,0.1);
+    border-radius: 10px;
+    color: #f0ead6;
+    font-family: 'DM Sans', sans-serif;
+    font-size: 1rem;
+    outline: none;
+    transition: border-color 0.25s, background 0.25s;
+    color-scheme: dark;
+  }
+
+  input[type="date"]:focus {
+    border-color: rgba(212, 175, 55, 0.5);
+    background: rgba(255,255,255,0.09);
+  }
+
+  .preview-box {
+    background: rgba(0,0,0,0.3);
+    border: 1px solid rgba(255,255,255,0.07);
+    border-radius: 12px;
+    padding: 1.2rem 1.4rem;
+    font-size: 0.97rem;
+    line-height: 1.7;
+    color: #ddd;
+    min-height: 80px;
+    white-space: pre-wrap;
+    word-break: break-word;
+    margin-bottom: 1.2rem;
+    transition: color 0.2s;
+  }
+
+  .preview-box .name-hi {
+    color: #d4af37;
+    font-weight: 500;
+  }
+
+  .copy-btn {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0.5rem;
+    width: 100%;
+    padding: 0.85rem 1.5rem;
+    background: linear-gradient(135deg, #d4af37, #b8932a);
+    border: none;
+    border-radius: 10px;
+    color: #0d0d0d;
+    font-family: 'DM Sans', sans-serif;
+    font-size: 0.9rem;
+    font-weight: 600;
+    letter-spacing: 0.05em;
+    text-transform: uppercase;
+    cursor: pointer;
+    transition: transform 0.15s, opacity 0.2s, box-shadow 0.2s;
+    box-shadow: 0 4px 20px rgba(212,175,55,0.2);
+  }
+
+  .copy-btn:hover {
+    opacity: 0.92;
+    transform: translateY(-1px);
+    box-shadow: 0 6px 28px rgba(212,175,55,0.35);
+  }
+
+  .copy-btn:active { transform: translateY(0); }
+
+  .copy-btn.copied {
+    background: linear-gradient(135deg, #4caf7d, #3a9e6a);
+    box-shadow: 0 4px 20px rgba(76,175,125,0.3);
+  }
+
+  .copy-btn svg { width: 16px; height: 16px; flex-shrink: 0; }
+
+  footer {
+    margin-top: 4rem;
+    font-size: 0.75rem;
+    color: #FFFFFF;
+    letter-spacing: 0.08em;
+    text-align: center;
+  }
+</style>
+</head>
+<body>
+
+<header>
+  <h1>✨ Congratulations Tool</h1>
+  <p>Fill in a name · copy · paste on your page</p>
+</header>
+
+<!-- GLOBAL NAME INPUT -->
+<div class="global-input-wrap">
+  <div class="global-input-card">
+    <span class="global-label">✦ Artist name — fills all cards automatically</span>
+    <div class="global-input-inner">
+      <input type="text" id="globalName" placeholder="e.g. Sophie Janssen" oninput="syncName()">
+    </div>
+    <p class="global-hint">Type the name once and it appears in every template below.</p>
+  </div>
+</div>
+
+<div class="cards-wrap">
+
+  <!-- CARD 1 -->
+  <div class="card">
+    <div class="card-label"><span class="num">1</span> Member Spotlight</div>
+    <div class="input-row">
+      <label for="date1">Date</label>
+      <input type="date" id="date1" onchange="updateAll()">
+    </div>
+    <div class="preview-box" id="preview1">✨ Member Spotlight! ✨
+This beautiful banner photo is by <span class="name-hi">NAME</span> 💫
+Thank you for sharing your talent and creativity with us. We love seeing your work shine here!
+
+<span class="name-hi">NAME</span> - <span class="name-hi">DATE</span></div>
+    <button class="copy-btn" id="btn1" onclick="copyText(1)">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg>
+      Copy
+    </button>
+  </div>
+
+  <!-- CARD 2 -->
+  <div class="card">
+    <div class="card-label"><span class="num">2</span> Cover Update</div>
+    <div class="preview-box" id="preview2">📸 Cover Update: Congratulations <span class="name-hi">NAME</span> ✨</div>
+    <button class="copy-btn" id="btn2" onclick="copyText(2)">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg>
+      Copy
+    </button>
+  </div>
+
+  <!-- CARD 3 -->
+  <div class="card">
+    <div class="card-label"><span class="num">3</span> Member Original Photo Comment</div>
+    <div class="preview-box" id="preview3">📸 Cover Update: Congratulations <span class="name-hi">NAME</span> ✨✨</div>
+    <button class="copy-btn" id="btn3" onclick="copyText(3)">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg>
+      Copy
+    </button>
+  </div>
+
+</div>
+
+<footer>Made with ❤️ for your Community by Inge David 2026</footer>
+
+<script>
+  function formatDate(dateStr) {
+    if (!dateStr) return 'DATE';
+    const [y, m, d] = dateStr.split('-');
+    return `${d}-${m}-${y}`;
+  }
+
+  function syncName() {
+    updateAll();
+  }
+
+  function updateAll() {
+    const name = document.getElementById('globalName').value.trim();
+    const date = document.getElementById('date1').value;
+    const n = name || 'NAME';
+    const d = formatDate(date);
+
+    document.getElementById('preview1').innerHTML =
+      `✨ Member Spotlight! ✨\nThis beautiful banner photo is by <span class="name-hi">${n}</span> 💫\nThank you for sharing your talent and creativity with us. We love seeing your work shine here!\n\n<span class="name-hi">${n}</span> - <span class="name-hi">${d}</span>`;
+
+    document.getElementById('preview2').innerHTML =
+      `📸 Cover Update: Congratulations <span class="name-hi">${n}</span> ✨`;
+
+    document.getElementById('preview3').innerHTML =
+      `📸 Cover Update: Congratulations <span class="name-hi">${n}</span> ✨✨`;
+  }
+
+  function copyText(cardNum) {
+    const name = document.getElementById('globalName').value.trim() || 'NAME';
+    const date = document.getElementById('date1').value;
+    const d = formatDate(date);
+
+    const texts = {
+      1: `✨ Member Spotlight! ✨\nThis beautiful banner photo is by ${name} 💫\nThank you for sharing your talent and creativity with us. We love seeing your work shine here!\n\n${name} - ${d}`,
+      2: `📸 Cover Update: Congratulations ${name} ✨`,
+      3: `📸 Cover Update: Congratulations ${name} ✨✨`
+    };
+
+    const btn = document.getElementById('btn' + cardNum);
+    navigator.clipboard.writeText(texts[cardNum]).then(() => {
+      btn.classList.add('copied');
+      btn.innerHTML = `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg> Copied!`;
+      setTimeout(() => {
+        btn.classList.remove('copied');
+        btn.innerHTML = `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg> Copy`;
+      }, 2200);
+    });
+  }
+</script>
+</body>
+</html>
